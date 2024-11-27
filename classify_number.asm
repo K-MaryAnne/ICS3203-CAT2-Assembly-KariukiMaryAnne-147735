@@ -68,7 +68,7 @@ done:
     int 0x80                  ; call kernel
 
 
-; ---
+
 ; Explanation of the Jump Instructions:
 ; ---
 ; cmp eax, 0: This instruction compares the value of eax (the user input, converted to an integer) with 0.
