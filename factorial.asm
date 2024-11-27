@@ -73,3 +73,53 @@ factorial:
     pop ebx           ; Restore ebx
     pop ebp           ; Restore base pointer
     ret               ; Return to caller
+
+
+; Explanation of Register Management and Stack Usage in the Factorial Program:
+
+; 1. Purpose of Register Usage:
+;    - `eax`: Acts as the primary register for intermediate and final results during the factorial calculation.
+;    - `ebx`: Holds the current multiplier in the recursive calculation.
+;    - `ecx`: Stores the input number whose factorial is being calculated.
+;    - `edx`: Reserved for general use in certain instructions or system calls.
+
+; 2. Preserving Register Values:
+;    The program uses the stack to ensure that critical register values are preserved across recursive calls.
+;    This is crucial because recursive calls inherently overwrite registers, leading to loss of data without proper handling.
+
+; 3. Stack Operations:
+;    - Push: Before making a recursive call, the program pushes the values of registers (`eax`, `ebx`, `ecx`) onto the stack.
+;      This saves their current state, allowing the program to restore them later.
+;    - Pop: After the recursive call returns, the program pops the saved values off the stack to restore the previous state of the registers.
+;      This ensures that each level of recursion operates independently without interfering with others.
+
+; 4. Key Steps for Stack Management:
+;    - Before Recursive Call:
+;      The program pushes the current values of `eax`, `ebx`, and `ecx` to preserve the state of these registers.
+;      This allows the program to use these registers freely during the recursive calculation without losing critical data.
+;    - Recursive Execution:
+;      During each recursive call, the function decrements `ecx` to calculate the factorial of `n-1`. The result is multiplied by the current
+;      value of `ecx` to compute the factorial.
+;    - After Recursive Call:
+;      Once the recursive call returns, the program restores the original values of `eax`, `ebx`, and `ecx` from the stack using the `pop` instruction.
+;      This ensures that the parent call can resume execution with its original context.
+
+; 5. Stack Frame Structure:
+;    - At each recursive level:
+;      - The current state of registers is pushed onto the stack.
+;      - After the recursive call, the stack is unwound using `pop` to restore the register states.
+;      - The stack remains balanced, as every `push` has a corresponding `pop`.
+
+; 6. Challenges of Stack Management:
+;    - Balancing the Stack:
+;      Failing to maintain a balanced stack (e.g., mismatched `push` and `pop` operations) can result in undefined behavior or program crashes.
+;    - Recursive Depth:
+;      Each recursive call consumes stack space. Deep recursion risks stack overflow if the input number is very large.
+;    - Register Overwriting:
+;      Without proper preservation, registers used during recursion might overwrite values needed in the parent call, causing incorrect results.
+
+; 7. Benefits of This Approach:
+;    - By preserving and restoring registers via the stack, the program achieves modularity, allowing each recursive call to operate independently.
+;    - This method aligns with the principles of structured programming, ensuring clarity and correctness in handling recursive operations.
+
+
