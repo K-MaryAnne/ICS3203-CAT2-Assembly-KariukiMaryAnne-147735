@@ -68,3 +68,57 @@ print_loop:
     mov eax, 1                        ; sys_exit
     xor ebx, ebx                      ; exit code 0
     int 0x80                          ; call kernel
+
+
+; ---
+; Explanation of the Array Reversal Process:
+; ---
+; 1. Loading the Array:
+;    The program initializes the array in memory with predefined values. This setup is critical because it
+;    provides the data that will be reversed. The array is stored in the `.data` section, which allows
+;    direct access to its elements through memory addressing.
+
+; 2. Initializing Pointers:
+;    Two registers are used as pointers: one (`esi`) for the start of the array and another (`edi`) for
+;    the end. The calculation for `edi` involves adding the size of the array to its base address and then
+;    subtracting one element size (e.g., `byte` or `word`) to ensure `edi` points to the last valid element.
+
+; 3. Looping Through the Array:
+;    The program uses a loop to process the array from both ends simultaneously:
+;    - The `esi` pointer increments from the start towards the middle.
+;    - The `edi` pointer decrements from the end towards the middle.
+;    The loop condition checks whether `esi` is less than `edi`. When `esi` meets or exceeds `edi`, the
+;    reversal is complete.
+
+; 4. Swapping Elements:
+;    During each iteration of the loop:
+;    - The value at the address pointed to by `esi` is loaded into a temporary register (`al` for bytes, for example).
+;    - The value at the address pointed to by `edi` is moved into the address pointed to by `esi`.
+;    - The temporary value (`al`) is then stored at the address pointed to by `edi`.
+;    This swapping process ensures that the elements at the two ends of the array are exchanged.
+
+; 5. Updating Pointers:
+;    After each swap, `esi` is incremented, and `edi` is decremented to move towards the center of the array.
+;    This ensures that all elements are processed in a single pass through the array.
+
+; Challenges with Handling Memory Directly:
+; 1. Memory Addressing:
+;    Direct manipulation of memory addresses requires careful calculations to avoid overwriting unintended locations.
+;    Errors in pointer arithmetic could lead to corrupting memory or accessing out-of-bounds areas, causing undefined behavior.
+
+; 2. Data Alignment:
+;    The array's data type determines the size of each element (e.g., `byte`, `word`, `dword`). All memory
+;    accesses must respect this alignment to avoid issues with misaligned data.
+
+; 3. Limited Debugging:
+;    Debugging assembly code involving memory operations can be challenging since errors might not
+;    manifest until the program runs. Tools like `gdb` or `objdump` can help, but interpreting raw
+;    memory values is time-consuming.
+
+; 4. Stack and Register Management:
+;    Using temporary registers (like `al`) for swapping requires careful stack management to avoid overwriting
+;    other data. It’s crucial to preserve important register values when switching between operations.
+
+; 5. Logical End Condition:
+;    Determining when to stop the loop involves comparing pointers (`esi` and `edi`). This requires precise
+;    logic to ensure that the loop terminates when the array is fully reversed without skipping or repeating elements.
