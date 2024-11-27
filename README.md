@@ -3,6 +3,8 @@
 ## Overview
 This repository contains assembly programs created for the ICS3203 CAT2 assignment. Each program demonstrates key assembly language concepts and solutions to the tasks provided in the assessment.
 
+Each program file is thoroughly documented with detailed comments explaining the purpose, functionality, and logic of key sections and functions. These comments provide clarity on the program's flow, decision-making processes, and technical implementation, ensuring the code is easy to understand and maintain.
+
 ## Program 1: Control Flow and Conditional Logic
 
 ### Overview
